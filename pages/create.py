@@ -1,19 +1,23 @@
 import streamlit as st
-st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
 from st_pages import hide_pages
-from datetime import datetime
+st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
 from google.cloud import firestore
-hide_pages(['main'])
+hide_pages(['main','login'])
 def saveBlog():
+    print(st.session_state)
     blog = {
         'title': st.session_state.title,
         'body': st.session_state.body,
         'date': firestore.SERVER_TIMESTAMP,
         'author': st.session_state.author
     }
+    for key,value in blog.items():
+        if value=='':
+            st.error('Please fill all the fields')
+            st.rerun()
     blogdb = st.session_state.blogs
     blogdb.create(blog)
-with st.form('create-blog',clear_on_submit=True,border=True):
+with st.form('create-blog',clear_on_submit=False,border=True):
     st.header('Write your own blog!')
     header = st.columns([2,2])
     header[0].subheader('Title')

@@ -1,7 +1,5 @@
 import streamlit as st
-from libs.db import App
-from libs.db import CRUDBlogs
-
+from libs.db import Users,Blogs
 st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
 st.markdown(
     """
@@ -13,7 +11,12 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-if 'app' not in st.session_state:
-    st.session_state['app'] = App()
-    st.session_state['blogs'] = CRUDBlogs()
+print(st.session_state)
+if 'users' not in st.session_state:
+    st.session_state['users']=Users()
+elif 'user' not in st.session_state:
+    st.switch_page('./pages/login.py')
+
+if 'blogs' not in st.session_state:
+    st.session_state['blogs'] = Blogs()
 st.switch_page('./pages/home.py')

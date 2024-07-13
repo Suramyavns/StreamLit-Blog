@@ -17,11 +17,12 @@ hide_pages(['main'])
 st.title('Home')
 if st.button('Write a blog!'):
     st.switch_page('pages/create.py')
-blogdb = st.session_state.blogs
-blogs = blogdb.readall()
-container = st.container()
-for blog in blogs:
-    card(
-        title=blog['title'],
-        text=blog['body'],
-    )
+if 'blogs' in st.session_state:
+    blogdb = st.session_state.blogs
+    blogs = blogdb.readall()
+    container = st.container()
+    for blog in blogs:
+        card(
+            title=blog['title'],
+            text=blog['body'],
+        )
