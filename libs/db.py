@@ -26,3 +26,13 @@ class Blogs(App):
         for doc in docs:
             blogs.append(doc.to_dict())
         return blogs
+class Tasks(App):
+    def __init__(self) -> None:
+        super().__init__()
+        self.taskdb = self.db.collection('tasks')
+    def create(self, data):
+        update_time,blog_ref=self.taskdb.add(data)
+    def getUsersTasks(self,user):
+        return self.taskdb.where(filter=FieldFilter('user','==',user)).get()
+    def deleteOne(self,id):
+        return self.taskdb.document(id).delete()

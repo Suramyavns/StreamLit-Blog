@@ -24,6 +24,8 @@ hide_pages(['main','login','create'])
 st.title('Home')
 if st.button('Write a blog!'):
     st.switch_page('pages/create.py')
+if st.button('My task list'):
+    st.switch_page('pages/tasks.py')
 if st.button('Sign Out'):
     logout()
     st.switch_page('pages/login.py')
