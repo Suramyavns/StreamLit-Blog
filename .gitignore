@@ -1,3 +1,6 @@
 blogbook/
 config/
 pages/__pycache__/
+__pycache__/
+assets/
+libs/__pycache__/
