@@ -72,10 +72,3 @@ Contributions are welcome! If you have suggestions or improvements, please open 
 For any inquiries, please contact Suramya Didwania at [sdidwania645@gmail.com](mailto:sdidwania645@gmail.com).
 
 ---
-
-Feel free to customize the `README.md` further based on specific details or instructions related to your project!
-
-```
-
-You can adjust the email address and other specific details as needed.
-```
