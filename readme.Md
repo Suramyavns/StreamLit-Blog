@@ -1,4 +1,3 @@
-````markdown
 # StreamLit Blog
 
 Welcome to the StreamLit Blog project! This application allows users to create and manage blog posts with image headers using Streamlit, Firebase Storage, and Firestore.
@@ -80,4 +79,3 @@ Feel free to customize the `README.md` further based on specific details or inst
 
 You can adjust the email address and other specific details as needed.
 ```
-````
