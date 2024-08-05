@@ -1,6 +1,9 @@
 import streamlit as st
-from libs.db import Users,Blogs,Tasks
+from libs.firebase import Firebase,get_firebase_instance
+import json
+
 st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
+
 st.markdown(
     """
 <style>
@@ -11,14 +14,10 @@ st.markdown(
 """,
     unsafe_allow_html=True,
 )
-print(st.session_state)
-if 'users' not in st.session_state:
-    st.session_state['users']=Users()
-    if 'user' not in st.session_state:
-        st.switch_page('./pages/login.py')
+app = get_firebase_instance()
 
-if 'blogs' not in st.session_state:
-    st.session_state['blogs'] = Blogs()
-if 'tasks' not in st.session_state:
-    st.session_state['tasks'] = Tasks()
-st.switch_page('./pages/home.py')
+try:
+    st.session_state['userData'] = app.get_current_user_data(st.session_state.idToken)
+    st.switch_page('./pages/home.py')
+except:
+    st.switch_page('./pages/login.py')

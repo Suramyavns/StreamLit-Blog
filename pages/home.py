@@ -1,6 +1,8 @@
 import streamlit as st
 from streamlit_card import card
-from libs.db import Blogs,Users
+from datetime import datetime
+from libs.firebase import get_firebase_instance
+
 st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
 st.markdown(
     """
@@ -14,27 +16,33 @@ st.markdown(
 )
 from streamlit_card import card
 from st_pages import hide_pages
-def logout():
-    if 'user' in st.session_state:
-        del st.session_state.user
-    print(st.session_state)
-    st.session_state['users']=Users()
-    st.session_state['blogs']=Blogs()
 hide_pages(['main','login','create'])
+
+app = get_firebase_instance()
+
 st.title('Home')
 if st.button('Write a blog!'):
     st.switch_page('pages/create.py')
 if st.button('My task list'):
     st.switch_page('pages/tasks.py')
 if st.button('Sign Out'):
-    logout()
-    st.switch_page('pages/login.py')
-if 'blogs' in st.session_state:
-    blogdb = st.session_state.blogs
-    blogs = blogdb.readall()
-    container = st.container()
+    # Sign Out
+    if 'idToken' in st.session_state:
+        app.sign_out()
+        st.switch_page('pages/login.py')
+try:
+    blogs = app.get_blogs_by_user(st.session_state.userData['users'][0]['email'])
     for blog in blogs:
-        card(
-            title=blog['title'],
-            text=blog['body'],
-        )
+            c = st.container(border=1)
+            data = blog
+            date = str(blog['date'])
+            year = date[:4]
+            month = date[5:7]
+            day = date[8:10]
+            c.header(blog['title'])
+            c.image(blog['headerimg'])
+            c.write(blog['body'])
+            c.write(f"Published on {day}-{month}-{year} by {blog['author']}")
+except Exception as e:
+    st.write('OOPS!')
+    print(e)
