@@ -11,7 +11,6 @@ def saveBlog(image):
     image_name = f"blog_headers/{image.name}"
     if title and body and image_name:
         image_url = app.upload_image(image, image_name)
-        print(image.name)
         blog = {
             'title': title,
             'body': body,
@@ -19,7 +18,7 @@ def saveBlog(image):
             'author': st.session_state.userData['users'][0]['email'],
             'headerimg':image_url
         }
-        print(app.add_data_to_firestore('blogs',blog))
+        app.add_data_to_firestore('blogs',blog)
         return True
     else:
         st.error("Please fill all the fields and upload an image.")
