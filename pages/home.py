@@ -2,7 +2,7 @@ import streamlit as st
 from streamlit_card import card
 from datetime import datetime
 from libs.firebase import get_firebase_instance
-
+from libs.blogs import blogs as Blogs
 st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
 st.markdown(
     """
@@ -30,7 +30,8 @@ if st.button('Sign Out'):
     if 'idToken' in st.session_state:
         app.sign_out()
         st.switch_page('pages/login.py')
-try:
+try:            
+    Blogs.display()
     blogs = app.get_blogs_by_user(st.session_state.userData['users'][0]['email'])
     for blog in blogs:
             c = st.container(border=1)

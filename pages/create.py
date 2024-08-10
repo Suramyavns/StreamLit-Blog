@@ -1,6 +1,7 @@
 import streamlit as st
 from st_pages import hide_pages
 from google.cloud import firestore
+from libs.blogs import blogs
 from libs.firebase import get_firebase_instance
 st.set_page_config(page_title='BlogBook',initial_sidebar_state='collapsed')
 hide_pages(['main','login'])
@@ -18,6 +19,7 @@ def saveBlog(image):
             'author': st.session_state.userData['users'][0]['email'],
             'headerimg':image_url
         }
+        blogs.add(tuple(blog.values()))
         app.add_data_to_firestore('blogs',blog)
         return True
     else:
