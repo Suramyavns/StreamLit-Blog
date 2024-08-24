@@ -20,6 +20,7 @@ hide_pages(['main','login','create'])
 
 app = get_firebase_instance()
 
+
 st.title('Home')
 if st.button('Write a blog!'):
     st.switch_page('pages/create.py')
@@ -32,18 +33,23 @@ if st.button('Sign Out'):
         st.switch_page('pages/login.py')
 try:            
     Blogs.display()
-    blogs = app.get_blogs_by_user(st.session_state.userData['users'][0]['email'])
+    blogs = app.get_all_blog_ids_by_user('blogs',st.session_state.userData['users'][0]['email'])
     for blog in blogs:
+            data = app.get_data_from_firestore('blogs',blog)
             c = st.container(border=1)
-            data = blog
-            date = str(blog['date'])
+            date = str(data['date'])
             year = date[:4]
             month = date[5:7]
             day = date[8:10]
-            c.header(blog['title'])
-            c.image(blog['headerimg'])
-            c.write(blog['body'])
-            c.write(f"Published on {day}-{month}-{year} by {blog['author']}")
+            c.header(data['title'])
+            c.image(data['headerimg'])
+            publish_date,blank,delete_btn = c.columns([8,2,2])
+            publish_date.write(data['body'])
+            publish_date.write(f"Published on {day}-{month}-{year} by {data['author']}")
+            if delete_btn.button('Delete',key=blog):
+                app.delete_document_from_collection('blogs',blog)
+                app.delete_file(data['headerimg'])
+                st.rerun()
 except Exception as e:
     st.write('OOPS!')
     print(e)

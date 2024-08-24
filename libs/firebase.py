@@ -100,7 +100,15 @@ class Firebase:
                 return f'No such document in {collection}/{document}'
         except Exception as e:
             return str(e)
-
+    def get_all_blog_ids_by_user(self, collection,userid):
+        try:
+            col_ref = self.db.collection(collection)
+            query = col_ref.where('author', '==', userid)
+            docs = query.stream()
+            ids = [doc.id for doc in docs]
+            return ids
+        except Exception as e:
+            return str(e)
     def get_all_document_ids_by_user(self, collection,userid):
         try:
             col_ref = self.db.collection(collection)
