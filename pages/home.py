@@ -43,7 +43,7 @@ try:
             day = date[8:10]
             c.header(data['title'])
             c.image(data['headerimg'])
-            publish_date,blank,delete_btn = c.columns([8,2,2])
+            publish_date,blank,delete_btn = c.columns([8,2,2],vertical_alignment='center')
             publish_date.write(data['body'])
             publish_date.write(f"Published on {day}-{month}-{year} by {data['author']}")
             if delete_btn.button('Delete',key=blog):

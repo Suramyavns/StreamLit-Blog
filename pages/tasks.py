@@ -24,6 +24,7 @@ def saveTask():
     return True
 def deleteTask(id):
     app.delete_document_from_collection('tasks',id)
+    st.rerun()
 if st.button('Home'):
     st.switch_page('pages/home.py')
     st.rerun()
@@ -36,8 +37,9 @@ with st.form('Add a Task',clear_on_submit=True):
 st.header('Your tasks')
 for task in app.get_all_document_ids_by_user('tasks',st.session_state.userData['users'][0]['email']):
     data = app.get_data_from_firestore('tasks',task)
-    col1,col2,col3 = st.columns(3,vertical_alignment='center')
-    col1.write(f'Task Name: {data["task"]}')
-    col2.write(f'Due Date: {str(datetime.strptime(data["date"], "%d-%m-%Y"))[:10]}')
-    if col3.button('Delete',key=task):
+    c = st.container(border=1)
+    details,btn = c.columns([10,2],vertical_alignment='center')
+    details.write(f'Task Name: {data["task"]}')
+    details.write(f'Due Date: {str(datetime.strptime(data["date"], "%d-%m-%Y"))[:10]}')
+    if btn.button('Delete',key=task):
         deleteTask(task)            
